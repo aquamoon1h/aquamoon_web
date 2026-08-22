@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — Libros y productos de astrología | aquamoon</title>
+<meta name="description" content="Libros recomendados de astrología, psicoastrología y autoconocimiento, y productos propios: journals, cartas natales ilustradas y láminas.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/tienda.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / Tienda</p>
+      <div class="reveal is-visible" style="max-width:700px;">
+        <p class="eyebrow">Tienda</p>
+        <h1>Para seguir explorando por tu cuenta</h1>
+        <p class="lede">Una selección de libros que recomiendo y algunos productos propios pensados para acompañar tu proceso de autoindagación entre consultas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">A. Libros recomendados</p>
+        <h2>Lecturas para acompañar tu proceso</h2>
+      </div>
+      <p class="affiliate-note reveal" style="max-width:560px; margin-bottom:2rem;">Algunos enlaces son de afiliación con Amazon. Esto no supone ningún coste adicional para ti y me ayuda a mantener este espacio.</p>
+
+      <div class="flex gap-1" id="bookFilters" style="flex-wrap:wrap; margin-bottom:2rem;"></div>
+      <div class="grid grid-3" id="booksGrid"></div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">B. Mis productos</p>
+        <h2>Creados desde este espacio</h2>
+      </div>
+      <div class="grid grid-3" id="productsGrid"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const categorias = [...new Set(LIBROS.map(l => l.categoria))];
+  const filterMount = document.getElementById("bookFilters");
+  filterMount.innerHTML = `<button class="btn btn-sm btn-outline filter-btn active" data-cat="todas">Todas</button>` +
+    categorias.map(c => `<button class="btn btn-sm btn-outline filter-btn" data-cat="${c}">${c}</button>`).join("");
+
+  function renderBooks(cat){
+    const mount = document.getElementById("booksGrid");
+    const list = cat === "todas" ? LIBROS : LIBROS.filter(l => l.categoria === cat);
+    mount.innerHTML = list.map(l => `
+      <div class="card product-card reveal is-visible">
+        <div style="aspect-ratio:3/4; border-radius:var(--radius-m); background:linear-gradient(160deg,var(--c-bg-soft),var(--c-bg-mist)); margin-bottom:0.9rem; display:flex; align-items:center; justify-content:center; color:var(--c-violet); font-family:var(--f-display); font-style:italic;">📖</div>
+        <span class="cat">${l.categoria}</span>
+        <h3>${l.titulo}</h3>
+        <span class="author">${l.autor} · ${l.nivel}</span>
+        <p style="font-size:0.88rem; margin-top:0.6rem;">${l.descripcion}</p>
+        <p style="font-size:0.82rem; color:var(--c-ink-soft);"><strong>Para quién:</strong> ${l.paraQuien}</p>
+        <div class="price-row">
+          <span class="badge-soft">Amazon</span>
+          <a href="${l.amazonUrl}" target="_blank" rel="noopener sponsored" class="btn btn-sm btn-outline">Ver en Amazon</a>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  filterMount.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterMount.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderBooks(btn.dataset.cat);
+    });
+  });
+  renderBooks("todas");
+
+  const prodMount = document.getElementById("productsGrid");
+  prodMount.innerHTML = PRODUCTOS.map(p => `
+    <div class="card product-card reveal is-visible">
+      <div style="aspect-ratio:3/4; border-radius:var(--radius-m); background:linear-gradient(160deg,var(--c-bg-mist),var(--c-bg-soft)); margin-bottom:0.9rem; display:flex; align-items:center; justify-content:center; color:var(--c-violet); font-family:var(--f-display); font-style:italic;">✦</div>
+      <span class="cat">${p.tipo}</span>
+      <h3>${p.titulo}</h3>
+      <p style="font-size:0.88rem;">${p.descripcion}</p>
+      <div class="price-row">
+        <span style="font-family:var(--f-display); font-size:1.2rem;">${p.precio} €</span>
+        ${p.disponible
+          ? `<button class="btn btn-sm btn-primary">Añadir al carrito</button>`
+          : `<span class="badge-soft">Próximamente</span>`}
+      </div>
+    </div>
+  `).join("");
+});
+</script>
+</body>
+</html>

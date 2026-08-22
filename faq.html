@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preguntas Frecuentes — aquamoon</title>
+<meta name="description" content="Respuestas a las dudas más habituales sobre las consultas de astrología online: cómo funcionan, qué recibes, y si sustituyen a la terapia psicológica.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/faq.html">
+<link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json" id="faqSchema"></script>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container" style="max-width:700px;">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / FAQ</p>
+      <div class="reveal is-visible">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h1>Todo lo que quizá te preguntas antes de reservar</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container" style="max-width:700px;" id="faqList"></div>
+  </section>
+
+  <section class="section section-mist text-center">
+    <div class="container reveal">
+      <h2>¿No encuentras tu pregunta?</h2>
+      <a href="contacto.html" class="btn btn-primary">Escríbeme</a>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("faqList").innerHTML = FAQS.map(f => `
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">${f.q}<span class="icon">+</span></button>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>
+  `).join("");
+  initFaqAccordion();
+
+  document.getElementById("faqSchema").textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": FAQS.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  });
+});
+</script>
+</body>
+</html>

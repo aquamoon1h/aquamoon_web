@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultas de Astrología Online — aquamoon</title>
+<meta name="description" content="Consultas de astrología online desde la psicoastrología kármica: Luna, planetas personales, Júpiter y Saturno, transgeneracionales, nodos kármicos y lectura completa. Vía Google Meet.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/consultas.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / Consultas</p>
+      <div class="reveal is-visible" style="max-width:700px;">
+        <p class="eyebrow">Consultas</p>
+        <h1>Un recorrido para conocerte, a tu ritmo</h1>
+        <p class="lede">Todas las consultas son online, a través de Google Meet, y parten de la misma idea: la astrología como herramienta de observación, no de predicción. Puedes empezar por una sola parte de ti o pedir la lectura completa — no hay un orden obligatorio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="container grid grid-3" id="consultas-grid"></div>
+  </section>
+
+  <section class="section section-mist">
+    <div class="container grid grid-2" style="align-items:center;">
+      <div class="reveal">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>De la reserva a la sesión</h2>
+      </div>
+      <div class="reveal">
+        <ol style="padding-left:1.2em; color:var(--c-ink-soft);">
+          <li style="margin-bottom:0.8em;">Eliges la consulta y el horario disponible en el calendario.</li>
+          <li style="margin-bottom:0.8em;">Completas un breve formulario previo (datos de nacimiento y motivo de consulta).</li>
+          <li style="margin-bottom:0.8em;">Recibes por email la confirmación con el enlace de Google Meet.</li>
+          <li style="margin-bottom:0.8em;">Nos encontramos en la sesión — sin necesidad de que sepas nada de astrología.</li>
+          <li>Recibes la grabación y el PDF con lo trabajado en la sesión.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section text-center">
+    <div class="container reveal">
+      <p class="philosophy-quote center">No se trata de encajar en tu carta. Se trata de observar qué parte de ti aparece cuando la lees.</p>
+      <a href="contacto.html" class="btn btn-outline" style="margin-top:1.5rem;">¿Tienes dudas antes de reservar?</a>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<div class="sticky-cta" id="stickyCta">
+  <span style="font-size:0.9rem;">¿Lista/o para empezar?</span>
+  <a href="#consultas-grid" class="btn btn-primary btn-sm">Ver consultas</a>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const mount = document.getElementById("consultas-grid");
+    mount.innerHTML = CONSULTAS.filter(c => c.slug !== "luna").map(c => `
+      <div class="flip-card reveal is-visible" tabindex="0">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <span class="flip-symbol" aria-hidden="true">${c.symbol}</span>
+            <h3>${c.nombre}</h3>
+            <span class="tag">${c.tag}</span>
+          </div>
+          <div class="flip-card-back consulta-card">
+            <span class="tag">${c.tag}</span>
+            <h3>${c.nombre}</h3>
+            <p style="font-size:0.92rem;">${c.resumen}</p>
+            <ul>
+              ${c.exploramos.slice(0,3).map(e => `<li>${e}</li>`).join("")}
+            </ul>
+            <div class="meta">
+              <span>⏱ ${c.duration} min</span>
+              <span>💻 ${c.modalidad}</span>
+            </div>
+            <div class="price">${c.price} € <small>/ sesión</small></div>
+            <a href="consulta-${c.slug}.html" class="btn btn-primary btn-sm">Ver y reservar</a>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    // Iguala la altura de las tarjetas a la de la cara con más contenido (sin scroll)
+    function sizeFlipCards() {
+      let maxH = 0;
+      mount.querySelectorAll(".flip-card-back").forEach(b => { maxH = Math.max(maxH, b.scrollHeight); });
+      mount.querySelectorAll(".flip-card").forEach(card => { card.style.height = maxH + "px"; });
+    }
+    sizeFlipCards();
+    let resizeT;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeT);
+      resizeT = setTimeout(sizeFlipCards, 150);
+    });
+
+    // En táctil no hay :hover fiable — toca la tarjeta para girarla
+    if (window.matchMedia("(hover: none)").matches) {
+      mount.querySelectorAll(".flip-card").forEach(card => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return;
+          card.classList.toggle("is-flipped");
+        });
+      });
+    }
+  });
+</script>
+</body>
+</html>

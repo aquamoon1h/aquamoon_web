@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — aquamoon</title>
+<meta name="description" content="Contacta con aquamoon para resolver dudas sobre las consultas de astrología online, escribir por WhatsApp o email, o seguir el trabajo en Instagram.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/contacto.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container" style="max-width:700px;">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / Contacto</p>
+      <div class="reveal is-visible">
+        <p class="eyebrow">Contacto</p>
+        <h1>Hablemos</h1>
+        <p class="lede">Si tienes dudas antes de reservar, o quieres contarme algo antes de una consulta, este es el lugar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container grid grid-2" style="align-items:start; max-width:1000px;">
+      <form class="reveal" id="contactForm" action="https://formspree.io/f/mjybeazk" method="POST">
+        <div class="form-field">
+          <label for="cnombre">Nombre</label>
+          <input type="text" id="cnombre" name="nombre" required>
+        </div>
+        <div class="form-field">
+          <label for="cemail">Email</label>
+          <input type="email" id="cemail" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="cmotivo">Motivo de contacto</label>
+          <select id="cmotivo" name="motivo">
+            <option>Duda sobre una consulta</option>
+            <option>Duda sobre un pedido de la tienda</option>
+            <option>Regalar una consulta</option>
+            <option>Colaboraciones</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="cmensaje">Mensaje</label>
+          <textarea id="cmensaje" name="mensaje" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submitBtn" style="width:100%;">Enviar mensaje</button>
+        <p id="formConfirm" class="hint" style="display:none; color:var(--c-violet-dk); margin-top:1rem;">Gracias por escribir — te responderé lo antes posible.</p>
+        <p id="formError" class="hint" style="display:none; color:var(--c-error); margin-top:1rem;">No se pudo enviar el mensaje. Escríbeme directamente a <a href="mailto:aquamoon1h@gmail.com" style="color:var(--c-error); text-decoration:underline;">aquamoon1h@gmail.com</a>.</p>
+      </form>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:1.5rem;">
+          <h3>Otras formas de contacto</h3>
+          <p style="margin-bottom:1.2rem;">Email, WhatsApp o Instagram — como prefieras.</p>
+          <p><a href="mailto:aquamoon1h@gmail.com" style="color:var(--c-violet-dk);">aquamoon1h@gmail.com</a></p>
+          <p><a href="https://wa.me/601110915" target="_blank" rel="noopener" style="color:var(--c-violet-dk);">WhatsApp</a></p>
+          <p style="margin-bottom:0;"><a href="https://www.instagram.com/aquamoon1h/" target="_blank" rel="noopener" style="color:var(--c-violet-dk);">Instagram</a></p>
+        </div>
+        <div class="card" style="background:var(--c-bg-soft); border:none;">
+          <h3>¿Prefieres reservar directamente?</h3>
+          <p>Si ya sabes qué consulta te interesa, puedes reservar tu horario ahora mismo.</p>
+          <a href="consultas.html" class="btn btn-primary">Reservar consulta</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const contactForm = document.getElementById("contactForm");
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("submitBtn");
+    const confirmMsg = document.getElementById("formConfirm");
+    const errorMsg = document.getElementById("formError");
+    confirmMsg.style.display = "none";
+    errorMsg.style.display = "none";
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: { "Accept": "application/json" }
+      });
+      if (response.ok) {
+        confirmMsg.style.display = "block";
+        contactForm.reset();
+      } else {
+        errorMsg.style.display = "block";
+      }
+    } catch (err) {
+      errorMsg.style.display = "block";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Enviar mensaje";
+    }
+  });
+</script>
+</body>
+</html>

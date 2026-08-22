@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservar consulta — aquamoon</title>
+<meta name="description" content="Reserva tu consulta de astrología online en un mismo flujo: elige la consulta, la fecha y hora, completa tus datos y confirma.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/reserva.html">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .steps-bar{ display:flex; gap:0.5rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+  .step-pill{ display:flex; align-items:center; gap:0.5em; font-size:0.82rem; color:var(--c-ink-soft); padding:0.5em 1em; border-radius:999px; background:var(--c-bg-soft); }
+  .step-pill.active{ background:var(--c-violet-dk); color:#fff; }
+  .step-pill.done{ background:var(--c-bg-mist); color:var(--c-violet-dk); }
+  .booking-step{ display:none; }
+  .booking-step.active{ display:block; }
+  .slot-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:0.6rem; margin-top:1rem; }
+  .slot-btn{ padding:0.7em 0.5em; border:1px solid var(--c-line); border-radius:var(--radius-s); background:#fff; font-size:0.88rem; text-align:center; transition:.2s; }
+  .slot-btn:hover{ border-color:var(--c-violet); }
+  .slot-btn.selected{ background:var(--c-violet-dk); color:#fff; border-color:var(--c-violet-dk); }
+  .date-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); gap:0.6rem; margin-top:1rem; }
+  .summary-box{ background:var(--c-bg-soft); border-radius:var(--radius-m); padding:1.5rem; margin-bottom:1.5rem; }
+  .summary-box dl{ display:grid; grid-template-columns:auto 1fr; gap:0.4em 1em; font-size:0.92rem; margin:0; }
+  .summary-box dt{ color:var(--c-ink-soft); }
+  .summary-box dd{ margin:0; font-weight:500; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero" style="padding-bottom:1rem;">
+    <div class="container" style="max-width:760px;">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / <a href="consultas.html">Consultas</a> / Reservar</p>
+      <h1>Reservar tu consulta</h1>
+      <p class="lede">Un proceso sencillo en cinco pasos. Nada se cobra hasta el último paso.</p>
+
+      <div class="steps-bar" id="stepsBar"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container" style="max-width:760px;">
+
+      <!-- PASO 1: consulta -->
+      <div class="booking-step" data-step="1">
+        <h2>1. Elige tu consulta</h2>
+        <div class="grid grid-2" id="pickConsulta" style="margin-top:1rem;"></div>
+      </div>
+
+      <!-- PASO 2: fecha y hora -->
+      <div class="booking-step" data-step="2">
+        <h2>2. Elige fecha y hora</h2>
+        <p class="hint" style="color:var(--c-ink-soft);">Disponibilidad orientativa — se sincronizará con Google Calendar.</p>
+        <div class="date-grid" id="pickDate"></div>
+        <h3 style="margin-top:2rem;">Hora</h3>
+        <p class="hint" style="color:var(--c-ink-soft);">Horario mostrado en tu zona horaria local.</p>
+        <div class="slot-grid" id="pickTime"></div>
+      </div>
+
+      <!-- PASO 3: formulario previo -->
+      <div class="booking-step" data-step="3">
+        <h2>3. Cuéntame un poco sobre ti</h2>
+        <p class="hint" style="color:var(--c-ink-soft); margin-bottom:1.5rem;">Estos datos son necesarios para calcular tu carta natal. Se tratan de forma confidencial y solo se usan para preparar tu sesión.</p>
+        <form id="preForm">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" required>
+            </div>
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" required>
+              <p class="hint" id="emailHint"></p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="fnac">Fecha de nacimiento</label>
+              <input type="date" id="fnac" required>
+            </div>
+            <div class="form-field">
+              <label for="hnac">Hora de nacimiento</label>
+              <input type="time" id="hnac">
+              <p class="hint">Si no la sabes, indícalo — lo vemos juntas en la sesión.</p>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="lnac">Lugar de nacimiento</label>
+            <input type="text" id="lnac" placeholder="Ciudad, país" required list="ciudadesList" autocomplete="off">
+            <datalist id="ciudadesList"></datalist>
+          </div>
+          <div class="form-field">
+            <label for="motivo">¿Qué te trae a esta consulta?</label>
+            <textarea id="motivo" rows="3"></textarea>
+          </div>
+          <div class="form-field">
+            <label for="preguntas">¿Alguna pregunta que quieras traer a la sesión?</label>
+            <textarea id="preguntas" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- PASO 4: pago + confirmación -->
+      <div class="booking-step" data-step="4">
+        <h2>4. Confirmar y pagar</h2>
+        <div class="summary-box" id="summaryBox"></div>
+        <p class="form-note">El pago se procesa de forma segura. Tras confirmarlo recibirás automáticamente un email con la fecha, la hora, el enlace de Google Meet y las instrucciones para la sesión.</p>
+        <button class="btn btn-primary" id="payBtn" style="width:100%;">Confirmar y pagar</button>
+      </div>
+
+      <!-- CONFIRMACIÓN FINAL -->
+      <div class="booking-step" data-step="5" style="text-align:center;">
+        <div style="font-size:2.4rem; margin-bottom:0.5rem;">✦</div>
+        <h2>Reserva confirmada</h2>
+        <p class="lede center">Te hemos enviado un email de confirmación con el enlace de Google Meet, la fecha y hora, y todo lo que necesitas saber antes de la sesión.</p>
+        <a href="index.html" class="btn btn-outline" style="margin-top:1rem;">Volver al inicio</a>
+      </div>
+
+      <div class="flex justify-between" style="margin-top:2.5rem;" id="navButtons">
+        <button class="btn btn-outline" id="btnBack">Atrás</button>
+        <button class="btn btn-primary" id="btnNext">Continuar</button>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const state = { step: 1, consulta: null, date: null, time: null };
+  const params = new URLSearchParams(window.location.search);
+  const preselected = params.get("consulta");
+  if (preselected) state.consulta = CONSULTAS.find(c => c.slug === preselected) || null;
+
+  const stepsBar = document.getElementById("stepsBar");
+  const labels = ["Consulta","Fecha y hora","Tus datos","Pago","Confirmación"];
+  function renderStepsBar(){
+    stepsBar.innerHTML = labels.map((l,i) => {
+      const n = i+1;
+      const cls = n === state.step ? "active" : (n < state.step ? "done" : "");
+      return `<span class="step-pill ${cls}">${n}. ${l}</span>`;
+    }).join("");
+  }
+
+  function renderConsultaPicker(){
+    const mount = document.getElementById("pickConsulta");
+    mount.innerHTML = CONSULTAS.filter(c => c.slug !== "luna").map(c => `
+      <button type="button" class="card consulta-pick" data-slug="${c.slug}" style="text-align:left; cursor:pointer;">
+        <span class="tag">${c.tag}</span>
+        <h3 style="font-size:1.05rem;">${c.nombre}</h3>
+        <p style="font-size:0.85rem;">${c.duration} min · ${c.price} €</p>
+      </button>
+    `).join("");
+    mount.querySelectorAll(".consulta-pick").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.consulta = CONSULTAS.find(c => c.slug === btn.dataset.slug);
+        mount.querySelectorAll(".consulta-pick").forEach(b => b.style.borderColor = "var(--c-line)");
+        btn.style.borderColor = "var(--c-violet-dk)";
+      });
+    });
+  }
+
+  function renderDates(){
+    const mount = document.getElementById("pickDate");
+    const days = [];
+    const today = new Date();
+    for(let i=1; i<=14; i++){
+      const d = new Date(today); d.setDate(today.getDate()+i);
+      if(d.getDay()===0) continue; // sin domingos, ejemplo de disponibilidad
+      days.push(d);
+    }
+    mount.innerHTML = days.map(d => {
+      const label = d.toLocaleDateString("es-ES",{weekday:"short", day:"numeric", month:"short"});
+      const iso = d.toISOString().slice(0,10);
+      return `<button type="button" class="slot-btn date-pick" data-date="${iso}">${label}</button>`;
+    }).join("");
+    mount.querySelectorAll(".date-pick").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.date = btn.dataset.date;
+        mount.querySelectorAll(".date-pick").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      });
+    });
+  }
+
+  function renderTimes(){
+    const mount = document.getElementById("pickTime");
+    const slots = ["09:00","10:30","12:00","16:00","17:30","19:00"];
+    mount.innerHTML = slots.map(t => `<button type="button" class="slot-btn time-pick" data-time="${t}">${t}</button>`).join("");
+    mount.querySelectorAll(".time-pick").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.time = btn.dataset.time;
+        mount.querySelectorAll(".time-pick").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      });
+    });
+  }
+
+  function renderSummary(){
+    const box = document.getElementById("summaryBox");
+    if(!state.consulta) return;
+    box.innerHTML = `
+      <dl>
+        <dt>Consulta</dt><dd>${state.consulta.nombre}</dd>
+        <dt>Fecha</dt><dd>${state.date || "—"}</dd>
+        <dt>Hora</dt><dd>${state.time || "—"}</dd>
+        <dt>Duración</dt><dd>${state.consulta.duration} min</dd>
+        <dt>Modalidad</dt><dd>${state.consulta.modalidad}</dd>
+        <dt>Total</dt><dd>${state.consulta.price} €</dd>
+      </dl>
+    `;
+  }
+
+  function showStep(n){
+    document.querySelectorAll(".booking-step").forEach(el => {
+      el.classList.toggle("active", Number(el.dataset.step) === n);
+    });
+    document.getElementById("navButtons").style.display = (n===5) ? "none" : "flex";
+    document.getElementById("btnBack").style.visibility = (n===1) ? "hidden" : "visible";
+    document.getElementById("btnNext").textContent = (n===4) ? "" : "Continuar";
+    if(n===2){ renderDates(); renderTimes(); }
+    if(n===4) renderSummary();
+    renderStepsBar();
+    window.scrollTo({top: document.querySelector(".page-hero").offsetTop, behavior:"smooth"});
+  }
+
+  // Autocompletado de "Lugar de nacimiento"
+  document.getElementById("ciudadesList").innerHTML = CIUDADES.map(c => `<option value="${c}">`).join("");
+
+  // Validador visual de email — se comprueba al escribir y al pulsar "Continuar"
+  const emailInput = document.getElementById("email");
+  const emailHint = document.getElementById("emailHint");
+  function validateEmail(){
+    const value = emailInput.value.trim();
+    if(value === ""){ emailHint.textContent = ""; emailHint.className = "hint"; emailInput.classList.remove("field-valid","field-invalid"); return false; }
+    const ok = emailInput.checkValidity();
+    emailHint.textContent = ok ? "✓ Email válido" : "✗ Revisa el formato del email (ej. nombre@dominio.com)";
+    emailHint.className = "hint " + (ok ? "hint-ok" : "hint-error");
+    emailInput.classList.toggle("field-valid", ok);
+    emailInput.classList.toggle("field-invalid", !ok);
+    return ok;
+  }
+  emailInput.addEventListener("blur", validateEmail);
+  emailInput.addEventListener("input", () => { if(emailHint.textContent) validateEmail(); });
+
+  document.getElementById("btnNext").addEventListener("click", () => {
+    if(state.step===1 && !state.consulta){ alert("Elige una consulta para continuar."); return; }
+    if(state.step===2 && !state.date){ alert("Elige una fecha para continuar."); return; }
+    if(state.step===2 && !state.time){ alert("Elige una hora para continuar."); return; }
+    if(state.step===3){
+      if(!validateEmail()){ emailInput.focus(); return; }
+      const form = document.getElementById("preForm");
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+    }
+    state.step = Math.min(state.step+1, 4);
+    showStep(state.step);
+  });
+  document.getElementById("btnBack").addEventListener("click", () => {
+    state.step = Math.max(state.step-1, 1);
+    showStep(state.step);
+  });
+  document.getElementById("payBtn").addEventListener("click", () => {
+    // Aquí se integrará el proveedor de pago real (Stripe/Redsys) + creación de evento en Google Calendar/Meet + email automático
+    state.step = 5;
+    showStep(5);
+  });
+
+  renderConsultaPicker();
+  if(state.consulta){
+    document.querySelectorAll(".consulta-pick").forEach(b => {
+      if(b.dataset.slug === state.consulta.slug) b.style.borderColor = "var(--c-violet-dk)";
+    });
+  }
+  state.step = state.consulta ? 2 : 1;
+  showStep(state.step);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Artículo — Blog | Aquamoon</title>
+<meta name="description" id="pageDesc" content="Artículo del blog de aquamoon sobre astrología y autoconocimiento.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero" style="padding-bottom:1rem;">
+    <div class="container" style="max-width:700px;">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / <a href="blog.html">Blog</a> / <span id="crumbCat"></span></p>
+      <span class="badge-soft" id="postCat"></span>
+      <h1 id="postTitle" style="margin-top:0.8rem;"></h1>
+      <p class="lede" id="postDate" style="color:var(--c-ink-soft); font-size:0.9rem;"></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container" style="max-width:700px;" id="postBody"></div>
+
+    <div class="container" style="max-width:700px;">
+      <div class="divider"></div>
+      <div class="center" style="background:var(--c-bg-soft); padding:2.5rem; border-radius:var(--radius-l);">
+        <h3>¿Quieres explorar esto en una consulta?</h3>
+        <p>La lectura solo es un punto de partida. En consulta podemos mirar esto directamente en tu carta.</p>
+        <a href="consultas.html" class="btn btn-primary">Ver consultas</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const slug = new URLSearchParams(window.location.search).get("slug");
+  const post = POSTS.find(p => p.slug === slug) || POSTS[0];
+  document.getElementById("pageTitle").textContent = post.titulo + " — Blog | aquamoon";
+  document.getElementById("pageDesc").setAttribute("content", post.resumen);
+  document.getElementById("postCat").textContent = post.categoria;
+  document.getElementById("crumbCat").textContent = post.titulo;
+  document.getElementById("postTitle").textContent = post.titulo;
+  document.getElementById("postDate").textContent = new Date(post.fecha).toLocaleDateString("es-ES",{year:"numeric",month:"long",day:"numeric"});
+  document.getElementById("postBody").innerHTML = post.contenido;
+});
+</script>
+</body>
+</html>
