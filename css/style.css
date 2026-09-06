@@ -134,6 +134,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .nav-wrap{ display:flex; align-items:center; justify-content:space-between; padding:1.1rem clamp(1.25rem,4vw,2.5rem); max-width:var(--container); margin:0 auto; }
 .brand{ font-family:var(--f-display); font-size:1.4rem; font-style:italic; letter-spacing:0.01em; color:var(--c-ink); }
+.brand-symbols{ font-family:'Segoe UI Symbol', var(--f-body), sans-serif; font-style:normal; font-size:0.85rem; color:var(--c-violet); font-variant-emoji:text; letter-spacing:0.08em; margin-left:0.5em; }
 .nav-links{ display:flex; align-items:center; gap:clamp(1rem,2vw,2rem); }
 .nav-links a{ font-size:0.92rem; color:var(--c-ink-soft); position:relative; padding:0.3em 0; }
 .nav-links a:hover, .nav-links a.active{ color:var(--c-ink); }

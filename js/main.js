@@ -33,7 +33,7 @@ function renderHeader() {
 
   mount.innerHTML = `
     <div class="nav-wrap">
-      <a href="${base}index.html" class="brand">${SITE.brandName}</a>
+      <a href="${base}index.html" class="brand">${SITE.brandName}<span class="brand-symbols" aria-hidden="true">♒ ☾</span></a>
       <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
         ${links}
       </nav>

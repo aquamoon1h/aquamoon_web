@@ -55,7 +55,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Ideal si nunca has trabajado con tu carta y quieres una puerta de entrada clara, sin abrumarte.",
     duration: 60,
-    price: 55,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF resumen con las claves de tu Sol, Luna y Ascendente"],
     symbol: "☉ ☽ ↑"
@@ -73,7 +73,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para quien quiere entender su mundo interno, su sensibilidad o sus patrones de apego.",
     duration: 60,
-    price: 55,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF con la posición de tu Luna y sus aspectos principales"],
     symbol: "☽"
@@ -91,7 +91,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para profundizar después de conocer tus luminarias, o si quieres empezar directamente por aquí.",
     duration: 60,
-    price: 65,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF con Mercurio, Venus y Marte en tu carta"],
     symbol: "☿ ♀ ♂"
@@ -109,7 +109,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para quien atraviesa procesos de cambio, decisiones importantes o etapas de mucha exigencia interna.",
     duration: 60,
-    price: 65,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF con Júpiter y Saturno en tu carta"],
     symbol: "♃ ♄"
@@ -127,7 +127,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para quien quiere mirar procesos de transformación profunda o patrones que sienten más grandes que ellos mismos.",
     duration: 60,
-    price: 70,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF con tus planetas transgeneracionales"],
     symbol: "♇ ♅ ♆"
@@ -145,7 +145,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para quien ya conoce lo básico de su carta y quiere una mirada más evolutiva y kármica.",
     duration: 60,
-    price: 65,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF con tus Nodos y Parte de Fortuna"],
     symbol: "☊ ☋ ⊗"
@@ -163,7 +163,7 @@ const CONSULTAS = [
     ],
     paraQuien: "Para quien quiere una fotografía completa desde el principio, o ya ha hecho consultas por niveles y quiere integrarlo todo.",
     duration: 90,
-    price: 110,
+    price: "XX",
     modalidad: "Online — Google Meet",
     recibe: ["Grabación de la sesión", "PDF completo de tu carta natal", "Gráfico de tu carta natal"],
     destacada: true,
