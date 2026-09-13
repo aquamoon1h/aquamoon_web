@@ -10,6 +10,7 @@
 <meta property="og:title" content="aquamoon — Astrología como herramienta de autoindagación">
 <meta property="og:description" content="Psicoastrología kármica y terapia transpersonal para comprenderte, observar tus patrones y conectar contigo. Consultas online.">
 <meta property="og:locale" content="es_ES">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 <script type="application/ld+json">
 {
@@ -58,6 +59,17 @@
       <p class="philosophy-quote wide center">“Uso la astrología como herramienta de autoindagación, no como una sentencia sobre tu vida.”</p>
     </div>
   </section>
+
+  <!-- CTA CARTA NATAL (oculto temporalmente)
+  <section class="section" style="padding-top:0;">
+    <div class="container reveal card" style="text-align:center; max-width:640px; padding:clamp(2rem,5vw,3rem);">
+      <p class="eyebrow center">Gratis</p>
+      <h2 style="margin-bottom:0.6rem;">Calcula tu carta natal</h2>
+      <p style="margin-bottom:1.5rem;">Con tu fecha, hora y lugar de nacimiento, obtén tu rueda astral, tus posiciones planetarias y tus aspectos — y descárgala en PDF.</p>
+      <a href="carta-natal.html" class="btn btn-primary">Calcular mi carta natal</a>
+    </div>
+  </section>
+  -->
 
   <!-- QUÉ ES LA ASTROLOGÍA PARA MÍ -->
   <section class="section section-alt">
@@ -214,7 +226,7 @@
       </div>
       <div class="reveal card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15);">
         <p class="tag" style="color:#C9B8E0;">90 minutos · Online</p>
-        <h3 style="color:#fff;">XX €</h3>
+        <h3 style="color:#fff;">110 €</h3>
         <ul style="margin-top:1rem;">
           <li style="color:#CFC7DA; margin-bottom:0.5em;">— Visión general de tu carta y sus ejes</li>
           <li style="color:#CFC7DA; margin-bottom:0.5em;">— Grabación de la sesión</li>
@@ -239,7 +251,7 @@
   </section>
   -->
 
-  <!-- BLOG -->
+  <!-- BLOG (oculto temporalmente)
   <section class="section">
     <div class="container">
       <div class="section-head reveal">
@@ -252,6 +264,7 @@
       </div>
     </div>
   </section>
+  -->
 
   <!-- FAQ BREVE -->
   <section class="section section-mist">
@@ -307,15 +320,17 @@
       }).join("");
     }
 
-    // Preview de blog (3 últimos)
+    // Preview de blog (3 últimos) — sección oculta temporalmente
     const blogMount = document.getElementById("home-blog-preview");
-    blogMount.innerHTML = POSTS.slice(0,3).map(p => `
-      <a href="blog.html" class="post-card reveal is-visible">
-        <div style="aspect-ratio:4/3; border-radius:var(--radius-m); background:linear-gradient(160deg,var(--c-bg-soft),var(--c-bg-mist)); margin-bottom:1rem;"></div>
-        <span class="cat">${p.categoria}</span>
-        <h3>${p.titulo}</h3>
-        <p>${p.resumen}</p>
-      </a>`).join("");
+    if (blogMount) {
+      blogMount.innerHTML = POSTS.slice(0,3).map(p => `
+        <a href="blog.html" class="post-card reveal is-visible">
+          <div style="aspect-ratio:4/3; border-radius:var(--radius-m); background:linear-gradient(160deg,var(--c-bg-soft),var(--c-bg-mist)); margin-bottom:1rem;"></div>
+          <span class="cat">${p.categoria}</span>
+          <h3>${p.titulo}</h3>
+          <p>${p.resumen}</p>
+        </a>`).join("");
+    }
 
     // Preview de FAQ (3 primeras)
     const faqMount = document.getElementById("home-faq-preview");

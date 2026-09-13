@@ -7,6 +7,7 @@
 <meta name="description" content="Reserva tu consulta de astrología online en un mismo flujo: elige la consulta, la fecha y hora, completa tus datos y confirma.">
 <link rel="canonical" href="https://www.aquamoon-astrologia.com/reserva.html">
 <meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 <style>
   .steps-bar{ display:flex; gap:0.5rem; margin-bottom:2.5rem; flex-wrap:wrap; }
@@ -232,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Autocompletado de "Lugar de nacimiento"
-  document.getElementById("ciudadesList").innerHTML = CIUDADES.map(c => `<option value="${c}">`).join("");
+  document.getElementById("ciudadesList").innerHTML = CIUDADES.map(c => `<option value="${c.name}">`).join("");
 
   // Validador visual de email — se comprueba al escribir y al pulsar "Continuar"
   const emailInput = document.getElementById("email");

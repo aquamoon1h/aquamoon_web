@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta Natal Gratis Online — aquamoon</title>
+<meta name="description" content="Calcula tu carta natal gratis: rueda astral, posiciones planetarias y aspectos, con opción de descargarla en PDF. Cálculo astronómico real, sin necesidad de conocimientos previos.">
+<link rel="canonical" href="https://www.aquamoon-astrologia.com/carta-natal.html">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* --- Asistente (mismo idioma visual que reserva.html) --- */
+  .steps-bar{ display:flex; gap:0.5rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+  .step-pill{ display:flex; align-items:center; gap:0.5em; font-size:0.82rem; color:var(--c-ink-soft); padding:0.5em 1em; border-radius:999px; background:var(--c-bg-soft); }
+  .step-pill.active{ background:var(--c-violet-dk); color:#fff; }
+  .step-pill.done{ background:var(--c-bg-mist); color:var(--c-violet-dk); }
+  .booking-step{ display:none; }
+  .booking-step.active{ display:block; }
+
+  /* --- Lugar de nacimiento / manual --- */
+  .manual-place{ display:none; margin-top:0.8rem; padding:1rem; background:var(--c-bg-soft); border-radius:var(--radius-s); }
+  .manual-place.open{ display:block; }
+  .link-toggle{ background:none; border:none; padding:0; color:var(--c-violet-dk); text-decoration:underline; font-size:0.85rem; cursor:pointer; margin-top:0.4rem; }
+
+  /* --- Hora desconocida --- */
+  .hora-desconocida-opts{ display:none; margin-top:0.8rem; padding:1rem; background:var(--c-bg-soft); border-radius:var(--radius-s); }
+  .hora-desconocida-opts.open{ display:block; }
+  .radio-row{ display:flex; align-items:flex-start; gap:0.6em; margin-bottom:0.6em; font-size:0.9rem; }
+  .radio-row input{ margin-top:0.3em; }
+
+  /* --- Tipo de hora + detalle --- */
+  .tipo-hora-row{ display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:0.5rem; }
+  .tipo-hora-row label{ display:flex; align-items:center; gap:0.4em; font-size:0.9rem; font-weight:400; }
+  details.hint-details{ margin-top:0.6rem; font-size:0.82rem; color:var(--c-ink-soft); }
+  details.hint-details summary{ cursor:pointer; color:var(--c-violet-dk); }
+  details.hint-details p{ margin-top:0.5em; }
+
+  /* --- Panel de opciones --- */
+  .opt-block{ margin-bottom:2rem; }
+  .opt-block h3{ font-size:1rem; margin-bottom:0.8rem; }
+  .opt-actions{ margin-bottom:0.8rem; display:flex; gap:1rem; }
+  .opt-actions button{ background:none; border:none; padding:0; color:var(--c-violet-dk); text-decoration:underline; font-size:0.82rem; cursor:pointer; }
+  .check-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:0.6rem; }
+  .check-item{ display:flex; align-items:center; gap:0.5em; font-size:0.9rem; }
+  .aspect-row{ display:flex; align-items:center; gap:0.7em; margin-bottom:0.6em; font-size:0.9rem; }
+  .aspect-row input[type="number"]{ width:4.5em; padding:0.35em 0.5em; border:1px solid var(--c-line); border-radius:var(--radius-s); }
+  select.house-select{ padding:0.7em 1em; border:1px solid var(--c-line); border-radius:var(--radius-s); background:#fff; font-size:0.95rem; }
+
+  /* --- Resultado --- */
+  .birth-summary{ background:var(--c-bg-soft); border-radius:var(--radius-m); padding:1.2rem 1.5rem; margin-bottom:2rem; font-size:0.9rem; color:var(--c-ink-soft); }
+  .birth-summary strong{ color:var(--c-ink); }
+  .fallback-note{ background:#FBEFEA; color:var(--c-error); border-radius:var(--radius-s); padding:0.8em 1em; font-size:0.85rem; margin-bottom:1.5rem; }
+  .wheel-wrap{ display:flex; justify-content:center; margin-bottom:2.5rem; }
+  .wheel-wrap svg{ max-width:100%; height:auto; }
+  .data-table{ width:100%; border-collapse:collapse; margin-bottom:2.5rem; font-size:0.88rem; }
+  .data-table th, .data-table td{ text-align:left; padding:0.6em 0.8em; border-bottom:1px solid var(--c-line); }
+  .data-table th{ color:var(--c-ink-soft); font-weight:600; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; }
+  .result-actions{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<div id="site-header" class="site-header"></div>
+
+<main id="main">
+  <section class="page-hero" style="padding-bottom:1rem;">
+    <div class="container" style="max-width:820px;">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / Carta Natal</p>
+      <div class="reveal is-visible">
+        <p class="eyebrow">Carta Natal</p>
+        <h1>Calcula tu carta natal</h1>
+        <p class="lede">Con tu fecha, hora y lugar de nacimiento calculamos tu rueda astral, tus posiciones planetarias y tus aspectos — con datos astronómicos reales. Puedes descargarla en PDF al final.</p>
+      </div>
+      <div class="steps-bar" id="stepsBar"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container" style="max-width:820px;">
+
+      <!-- PASO 1: datos de nacimiento -->
+      <div class="booking-step" data-step="1">
+        <h2>1. Tus datos de nacimiento</h2>
+        <form id="birthForm">
+          <div class="form-field">
+            <label for="cnNombre">Nombre y apellidos (opcional, aparece en el PDF)</label>
+            <input type="text" id="cnNombre">
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="cnFecha">Fecha de nacimiento</label>
+              <input type="date" id="cnFecha" required min="1500-01-01" max="2100-12-31">
+            </div>
+            <div class="form-field">
+              <label for="cnHora">Hora de nacimiento</label>
+              <input type="time" id="cnHora">
+              <label style="display:flex; align-items:center; gap:0.5em; font-weight:400; margin-top:0.5em; font-size:0.85rem;">
+                <input type="checkbox" id="cnHoraDesconocida"> No sé la hora exacta
+              </label>
+            </div>
+          </div>
+
+          <div class="hora-desconocida-opts" id="horaDesconocidaOpts">
+            <p class="hint" style="margin-bottom:0.6em;">Elige cómo quieres calcular la carta sin hora exacta:</p>
+            <label class="radio-row"><input type="radio" name="horaFallback" value="mediodia" checked> <span><strong>Mediodía (12:00)</strong> — aproximación habitual; las casas no serán fiables.</span></label>
+            <label class="radio-row"><input type="radio" name="horaFallback" value="asc0aries"> <span><strong>Ascendente en 0° Aries</strong> — carta "solar", sin dato horario real (método usado cuando se prioriza ver planetas/aspectos y no casas).</span></label>
+            <label class="radio-row"><input type="radio" name="horaFallback" value="solasc"> <span><strong>Sol en el Ascendente</strong> — otra convención habitual para cartas sin hora.</span></label>
+          </div>
+
+          <div class="form-field" style="margin-top:1.25rem;">
+            <label for="cnLugar">Lugar de nacimiento</label>
+            <input type="text" id="cnLugar" list="ciudadesList" placeholder="Ciudad, país" autocomplete="off">
+            <datalist id="ciudadesList"></datalist>
+            <button type="button" class="link-toggle" id="btnManualPlace">No encuentro mi ciudad — introducir coordenadas manualmente</button>
+          </div>
+          <div class="manual-place" id="manualPlace">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="cnLat">Latitud (decimal, negativa = Sur)</label>
+                <input type="number" id="cnLat" step="0.0001" min="-90" max="90" placeholder="ej. 40.4168">
+              </div>
+              <div class="form-field">
+                <label for="cnLon">Longitud (decimal, negativa = Oeste)</label>
+                <input type="number" id="cnLon" step="0.0001" min="-180" max="180" placeholder="ej. -3.7038">
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="cnUtcOffset">Huso horario en la fecha de nacimiento (horas respecto a UTC)</label>
+              <input type="number" id="cnUtcOffset" step="0.25" min="-12" max="14" placeholder="ej. 2 (verano en España)">
+              <p class="hint">Solo se usa si eliges hora local (HL) más abajo. Si no lo sabes, usa UT o LMT.</p>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top:1.25rem;">
+            <label>Tipo de hora</label>
+            <div class="tipo-hora-row">
+              <label><input type="radio" name="tipoHora" value="HL" checked> HL (hora local)</label>
+              <label><input type="radio" name="tipoHora" value="UT"> UT (tiempo universal)</label>
+              <label><input type="radio" name="tipoHora" value="LMT"> LMT (hora local media)</label>
+            </div>
+            <details class="hint-details">
+              <summary>¿Qué diferencia hay?</summary>
+              <p><strong>HL</strong>: la hora que marcaba el reloj en ese lugar (la más habitual — la que suele figurar en la partida de nacimiento). <strong>UT</strong>: tiempo universal (Greenwich), úsala si tu dato ya viene en UT/GMT. <strong>LMT</strong>: hora solar media del lugar exacto (según su longitud geográfica), sin husos horarios oficiales ni cambios de hora — se usaba antes de que existieran las zonas horarias estándar.</p>
+            </details>
+          </div>
+        </form>
+      </div>
+
+      <!-- PASO 2: opciones -->
+      <div class="booking-step" data-step="2">
+        <h2>2. Opciones de la carta</h2>
+
+        <div class="opt-block">
+          <h3>Sistema de casas</h3>
+          <select class="house-select" id="optHouseSystem">
+            <option value="placidus" selected>Plácido</option>
+            <option value="equal">Casas Iguales</option>
+            <option value="whole">Signos Enteros (Whole Sign)</option>
+          </select>
+          <p class="hint" style="margin-top:0.5em;">Plácido puede no ser válido en latitudes muy extremas; en ese caso se usará Casas Iguales automáticamente y te avisaremos.</p>
+        </div>
+
+        <div class="opt-block">
+          <h3>Planetas y puntos a mostrar</h3>
+          <div class="opt-actions">
+            <button type="button" data-check-group="points" data-check-action="all">Seleccionar todo</button>
+            <button type="button" data-check-group="points" data-check-action="none">Deseleccionar todo</button>
+          </div>
+          <div class="check-grid" id="pointsCheckGrid"></div>
+        </div>
+
+        <div class="opt-block">
+          <h3>Aspectos a calcular</h3>
+          <div class="opt-actions">
+            <button type="button" data-check-group="aspects" data-check-action="all">Seleccionar todo</button>
+            <button type="button" data-check-group="aspects" data-check-action="none">Deseleccionar todo</button>
+          </div>
+          <div id="aspectsCheckList"></div>
+        </div>
+
+        <div class="opt-block">
+          <h3>Mostrar en el resultado</h3>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" id="optShowWheel" checked> Rueda astral</label>
+            <label class="check-item"><input type="checkbox" id="optShowPositions" checked> Tabla de posiciones</label>
+            <label class="check-item"><input type="checkbox" id="optShowAspects" checked> Tabla de aspectos</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 3: resultado -->
+      <div class="booking-step" data-step="3">
+        <h2>3. Tu carta natal</h2>
+        <div id="fallbackNote" class="fallback-note" style="display:none;"></div>
+        <div class="birth-summary" id="birthSummary"></div>
+
+        <div class="wheel-wrap" id="wheelWrap"></div>
+
+        <div id="positionsWrap">
+          <h3>Posiciones planetarias</h3>
+          <div style="overflow-x:auto;">
+            <table class="data-table" id="positionsTable"></table>
+          </div>
+        </div>
+
+        <div id="aspectsWrap">
+          <h3>Aspectos</h3>
+          <div style="overflow-x:auto;">
+            <table class="data-table" id="aspectsTable"></table>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button type="button" class="btn btn-primary" id="btnDownloadPdf">Descargar PDF</button>
+          <button type="button" class="btn btn-outline" id="btnEditAgain">Editar datos</button>
+        </div>
+      </div>
+
+      <div class="flex justify-between" style="margin-top:2.5rem;" id="navButtons">
+        <button class="btn btn-outline" id="btnBack">Atrás</button>
+        <button class="btn btn-primary" id="btnNext">Continuar</button>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/astro-calc.js"></script>
+<script src="js/carta-natal.js"></script>
+</body>
+</html>

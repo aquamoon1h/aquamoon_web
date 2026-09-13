@@ -6,8 +6,9 @@ const NAV_ITEMS = [
   { href: "index.html", label: "Inicio" },
   { href: "consultas.html", label: "Consultas" },
   { href: "tienda.html", label: "Tienda", hidden: true },
+  { href: "carta-natal.html", label: "Carta Natal", hidden: true },
   { href: "sobre-mi.html", label: "Sobre mí" },
-  { href: "blog.html", label: "Blog" },
+  { href: "blog.html", label: "Blog", hidden: true },
   { href: "faq.html", label: "FAQ" },
   { href: "contacto.html", label: "Contacto" },
 ];
